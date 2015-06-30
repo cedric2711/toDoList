@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta type="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<style>
+  * { 
+    margin: 0;
+    padding: 0;
+  }
+  footer, section, header, aside, figure {
+    display: block;
+  }
+  body {
+    padding: 2em;
+    font-size: 15px;
+    font-family: helvetica, arial, sans-serif;
+  }
+  form {
+    width: 400px;
+    background: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+  #newitem {
+    width: 160px;
+  }
+  #todolist {
+    width: 400px;
+    margin: 10px 10px;
+  }
+  #todolist li {
+    border-radius: 2px;
+    list-style: none;
+    background: #eee;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  #todolist li:nth-child(2n) {
+    background: #ccc;
+  }
+  <!-- todolist header -->
+   #todolistheader {
+    width: 380px;
+    margin: 10px 10px;
+  }
+  #todolistheader li {
+    border-radius: 2px;
+    list-style: none;
+    background: #eee;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  #todolistheader li:nth-child(2n) {
+    background: #ccc;
+  }
+
+</style>
+</head>
+<body>
+  <header><h1></h1></header>
+  <div style="float:left; width:20%;">
+  This is another section
+   <ul id="todolistheader"></ul>
+  </div>
+   <div style="float:right; width:80%;">
+  <section>
+  <form action="#" method="post" id="titleForm">
+  <div>
+  <label for="toDoTitle">To Do Title</label>
+  <input type="text" name="toDoTitle" id="toDoTitle" required>
+  <input type="submit" Name="Save" value="Save">
+  <input type="submit" Name="Clear" value="Clear">
+  </form>
+  </div>
+    <ul id="todolist"></ul>
+    <form action="#" method="post" id="listForm">
+      <div>
+        <label for="newitem">Add item</label>
+		<input type="checkbox" id="importantMain">
+        <input type="text" name="newitem" id="newitem" 
+               placeholder="new item" required>
+		<label for="myDate">Complete by</label>	   
+		<input type="date" name="myDate" id="myDate" value="">	   
+        <input type="submit" value="Add">
+      </div>
+    </form>
+	
+  </section>
+  </div>
+  <footer>
+  </footer>
+<script>
+(function(){
+
+  var todo = document.querySelector( '#todolist' ),
+	  todoHead = document.querySelector( '#todolistheader' ),
+      form = document.querySelector( '#listForm' ),
+      form2 = document.querySelector( '#titleForm' ),
+      field = document.querySelector( '#newitem' );
+      fieldDate = document.querySelector( '#myDate' );
+      fieldName = document.querySelector( '#toDoTitle' );
+	  checkImportance=document.querySelector( '#importantMain' );
+    
+  form.addEventListener( 'submit', function( ev ) {debugger;
+	// todoHead.innerHTML += '<li>' + field.value + '</li>';
+	var datestring='';
+	if(fieldDate.value!=''){
+	 datestring='by '+fieldDate.value;
+	}
+    todo.innerHTML += '<li><input type="checkbox" name="important" checked='+checkImportance.checked+'><input type="text" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" required> '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+    field.value = '';
+	fieldDate.value='';
+	checkImportance.checked=false;
+    field.focus();
+    storestate();
+    ev.preventDefault();
+  }, false);
+
+  form2.addEventListener( 'submit', function( ev ) {debugger;
+  
+  /*  todo.innerHTML += '<li><input type="checkbox" name="important" checked='+checkImportance.checked+'><input type="text" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" required> </li>';
+    field.value = '';
+	checkImportance.checked=false;
+    field.focus();
+    storestate();*/
+	storestateTotal();
+    ev.preventDefault();
+  }, false);
+ 
+  function deleteItem(e){
+  debugger;
+  }
+  todo.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+	if(t.tagName==='IMG'){
+		localStorage.removeItem(t.parentNode.innerHTML);
+		t.parentNode.parentNode.removeChild( t.parentNode );
+	}
+	 storestate();
+    ev.preventDefault();
+  }, false);
+  
+   todoHead.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+	if(t.tagName==='IMG'){
+		 t.parentNode.parentNode.removeChild( t.parentNode );
+	}
+	//document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+	//alert('here');
+	if(t.innerHTML){
+		todo.innerHTML=localStorage.getItem(t.innerHTML.substring(0,t.innerHTML.indexOf("<img")));
+	}
+    ev.preventDefault();
+  }, false);
+
+  document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+  document.addEventListener( 'DOMContentLoaded', retrievestateHeader, false );
+  
+  function storestate() {	debugger;
+    localStorage.todolist = todo.innerHTML;
+  };
+  
+  function storestateTotal() {	debugger;
+    localStorage.todolistheader = todolistheader.innerHTML;
+	var headerArray=todolistheader.innerHTML.split('<li>');
+	var present=0;
+	for(var i=0; i<headerArray.length; i++){
+		if(headerArray[i].indexOf("<img")!=-1){
+		//	newHeader.push(headerArray[i].substring(0,headerArray[i].indexOf("</li>")));
+			if(headerArray[i].substring(0,headerArray[i].indexOf("<img"))==fieldName.value){
+				localStorage.setItem(fieldName.value,todo.innerHTML);
+				present=1;
+				break;
+			}
+		}
+	}
+	if(present==0){
+		localStorage.setItem(fieldName.value,todo.innerHTML);
+		todoHead.innerHTML += '<li>' + fieldName.value + '<img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+	}
+	//for
+	
+  };
+
+  function retrievestate() {debugger;
+    if ( localStorage.todolist ) {
+      todo.innerHTML = localStorage.todolist;
+    }
+  };
+  
+   function retrievestateHeader() {debugger;
+    if ( localStorage.todolistheader ) {
+      todoHead.innerHTML = localStorage.todolistheader;
+    }
+  };
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta type="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<style>
+  * { 
+    margin: 0;
+    padding: 0;
+  }
+  footer, section, header, aside, figure {
+    display: block;
+  }
+  body {
+    padding: 2em;
+    font-size: 15px;
+    font-family: helvetica, arial, sans-serif;
+  }
+  form {
+    width: 280px;
+    background: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+  #newitem {
+    width: 160px;
+  }
+  #todolist {
+    width: 280px;
+    margin: 10px 10px;
+  }
+  #todolist li {
+    border-radius: 2px;
+    list-style: none;
+    background: #eee;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  #todolist li:nth-child(2n) {
+    background: #ccc;
+  }
+  #todolist li:hover:after,
+  #todolist li.done:after {
+	content: 'x';
+    font-weight: bold;
+    color: #c00;
+    position: absolute;
+    right: 5px;      
+  }
+  <!-- #todolist li.done:hover:after {
+    content: 'x';
+    font-weight: bold;
+    color: #c00;
+    position: absolute;
+    right: 5px;    
+  }
+   -->
+</style>
+</head>
+<body>
+  <header><h1></h1></header>
+  <div style="float:left; width:20%;">
+  This is another section
+   <ul id="todolistheader"></ul>
+  </div>
+   <div style="float:right; width:80%;">
+  <section>
+  <form action="#" method="post" id="titleForm">
+  <div>
+  <input type="text" name="toDoTitle" id="toDoTitle" required>
+  <input type="submit" value="Save">
+  </form>
+  </div>
+    <ul id="todolist"></ul>
+    <form action="#" method="post" id="listForm">
+      <div>
+        <label for="newitem">Add item</label>
+		<input type="checkbox" id="importantMain">
+        <input type="text" name="newitem" id="newitem" 
+               placeholder="new item" required>
+        <input type="submit" value="Add">
+      </div>
+    </form>
+	
+  </section>
+  </div>
+  <footer>
+  </footer>
+<script>
+(function(){
+
+  var todo = document.querySelector( '#todolist' ),
+	  todoHead = document.querySelector( '#todolistheader' ),
+      form = document.querySelector( '#listForm' ),
+      form2 = document.querySelector( '#titleForm' ),
+      field = document.querySelector( '#newitem' );
+      fieldName = document.querySelector( '#toDoTitle' );
+	  checkImportance=document.querySelector( '#importantMain' );
+    
+  form.addEventListener( 'submit', function( ev ) {debugger;
+	// todoHead.innerHTML += '<li>' + field.value + '</li>';
+    todo.innerHTML += '<li><input type="checkbox" name="important" checked='+checkImportance.checked+'><input type="text" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" required> </li>';
+    field.value = '';
+	checkImportance.checked=false;
+    field.focus();
+    storestate();
+    ev.preventDefault();
+  }, false);
+
+  form2.addEventListener( 'submit', function( ev ) {debugger;
+    todoHead.innerHTML += '<li>' + fieldName.value + '</li>';
+  /*  todo.innerHTML += '<li><input type="checkbox" name="important" checked='+checkImportance.checked+'><input type="text" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" required> </li>';
+    field.value = '';
+	checkImportance.checked=false;
+    field.focus();
+    storestate();*/
+	storestateTotal();
+    ev.preventDefault();
+  }, false);
+
+  todo.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+    if ( t.tagName === 'LI' ) {
+      if ( t.classList.contains( 'done' ) ) {
+        t.parentNode.removeChild( t );
+      } else {  
+        t.classList.add( 'done' );
+      }
+      storestate();
+    };
+    ev.preventDefault();
+  }, false);
+  
+   todoHead.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+   /* if ( t.tagName === 'LI' ) {
+      if ( t.classList.contains( 'done' ) ) {
+        t.parentNode.removeChild( t );
+      } else {  
+        t.classList.add( 'done' );
+      }
+      storestateTotal();
+    };*/
+	//document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+	alert('here');
+    ev.preventDefault();
+  }, false);
+
+  document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+  
+  function storestate() {	debugger;
+    localStorage.todolist = todo.innerHTML;
+  };
+  
+  function storestateTotal() {	debugger;
+    localStorage.todolistheader = todolistheader.innerHTML;
+  };
+
+  function retrievestate() {debugger;
+    if ( localStorage.todolist ) {
+      todo.innerHTML = localStorage.todolist;
+    }
+  };
+
+})();
+
+</script>
+</body>
+</html>
