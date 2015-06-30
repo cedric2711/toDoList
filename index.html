@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta type="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<style>
+  * { 
+    margin: 0;
+    padding: 0;
+  }
+  footer, section, header, aside, figure {
+    display: block;
+  }
+  body {
+    padding: 2em;
+    font-size: 15px;
+    font-family: helvetica, arial, sans-serif;
+  }
+  form {
+    width: 400px;
+    background: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+  #newitem {
+    width: 160px;
+  }
+  #todolist {
+    width: 400px;
+    margin: 10px 10px;
+  }
+  #todolist li {
+    border-radius: 2px;
+    list-style: none;
+    background: #eee;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  #todolist li:nth-child(2n) {
+    background: #ccc;
+  }
+  <!-- todolist header -->
+   #todolistheader {
+    width: 250px;
+    margin: 10px 10px;
+  }
+  #todolistheader li {
+    border-radius: 2px;
+    list-style: none;
+    background: #eee;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  #todolistheader li:nth-child(2n) {
+    background: #ccc;
+  }
+
+</style>
+</head>
+<body>
+  <header><h1></h1></header>
+  <div style="float:left; width:19%; margin-right:5px">
+  <h3>To Do Lists</h3>
+   <ul id="todolistheader"></ul>
+  </div>
+   <div style="float:right; width:80%;">
+  <section>
+  <form action="#" method="post" id="titleForm">
+  <div>
+  <label for="toDoTitle">To Do Title</label>
+  <input type="text" name="toDoTitle" id="toDoTitle" >
+  <img src="images/save.gif" alt="Save Item">
+  <img src="images/eraser.png" alt="Erase Item">
+  <!-- <input type="submit" Name="Save" value="Save">
+  <input type="submit" Name="Clear" value="Clear"> -->
+  </form>
+  </div>
+
+    <ul id="todolist"></ul>
+    <form action="#" method="post" id="listForm">
+      <div>
+        <label for="newitem">Add item</label>
+		<input type="text" name="newitem" id="newitem" 
+               placeholder="new item" ></br>
+		<label for="myDate">Complete by</label>	   
+		<input type="date" name="myDate" id="myDate" value="">	   
+        <img src="images/add.gif" alt="Add Item" style="float:right;">
+      </div>
+    </form>
+	
+  </section>
+  </div>
+  <footer>
+  </footer>
+<script>
+(function(){
+
+  var todo = document.querySelector( '#todolist' ),
+	  todoHead = document.querySelector( '#todolistheader' ),
+      form = document.querySelector( '#listForm' ),
+      form2 = document.querySelector( '#titleForm' ),
+      field = document.querySelector( '#newitem' );
+      fieldDate = document.querySelector( '#myDate' );
+      fieldName = document.querySelector( '#toDoTitle' );
+
+    
+  form.addEventListener( 'click', function( ev ) {debugger;
+	// todoHead.innerHTML += '<li>' + field.value + '</li>';
+	var t = ev.target;
+	var datestring='';
+	if(t.tagName==='IMG'&& (t.alt.indexOf('Add')!=-1)){
+		if(field.value==''){
+			alert('Please enter an Item for the list');
+			ev.preventDefault();
+			return false;
+		}
+		if(fieldDate.value!=''){
+		 datestring='by: '+fieldDate.value;
+		}
+		var done='<img src="images/tick-circle.png" alt="Done" style="float:left; display:none;">';
+		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
+		todo.innerHTML += '<li>'+done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" > '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+		//todo.innerHTML += '<li><strike>'+field.value+' '+datestring+' </strike>    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+		field.value = '';
+		fieldDate.value='';
+
+		field.focus();
+		storestate();
+	}
+	if(t.type!='date'){
+		ev.preventDefault();
+	}
+  }, false); 
+ 
+  form.addEventListener( 'submit', function( ev ) {debugger;
+	// todoHead.innerHTML += '<li>' + field.value + '</li>';
+	var t = ev.target;
+	var datestring='';
+	if(field.value==''){
+			alert('Please enter an Item for the list');
+			ev.preventDefault();
+			return false;
+	}
+	if(fieldDate.value!=''){
+	 datestring='by: '+fieldDate.value;
+	}
+	var done='<img src="images/tick-circle.png" alt="Done" style="float:left; display:none;">';
+	var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
+	todo.innerHTML += '<li>'+done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" > '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+	//todo.innerHTML += '<li><strike>'+field.value+' '+datestring+' </strike>    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+	field.value = '';
+	fieldDate.value='';
+
+	field.focus();
+	storestate();
+    ev.preventDefault();
+  }, false);
+  
+  form2.addEventListener( 'click', function( ev ) {debugger;
+   var t = ev.target;
+   
+	if(t.tagName==='IMG'&& (t.alt.indexOf('Save')!=-1)){
+		// t.parentNode.parentNode.removeChild( t.parentNode );
+		if(fieldName.value==''){
+			alert('Please enter a Name for the list');
+			ev.preventDefault();
+			return false;
+		}
+		storestateTotal();
+		
+		todo.innerHTML =''; 
+		fieldName.value='';
+		localStorage.todolist='';
+	}
+	
+	if(t.tagName==='IMG'&& (t.alt.indexOf('Erase')!=-1)){
+		// t.parentNode.parentNode.removeChild( t.parentNode );
+	//	storestateTotal();
+		//for(var i=0; i<localStorage.length; i++)
+		//localStorage.removeItem(t.parentNode.innerHTML);
+	//alert(1);
+		todo.innerHTML =''; 
+		fieldName.value='';
+		localStorage.todolist='';
+	}
+  
+	//storestateTotal();
+    ev.preventDefault();
+  }, false);
+ 
+  
+  todo.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+	if(t.tagName==='IMG' && (t.alt.indexOf('Delete')!=-1)){
+		localStorage.removeItem(t.parentNode.innerHTML);
+		t.parentNode.parentNode.removeChild( t.parentNode );
+	}else if(t.tagName==='IMG' && (t.alt.indexOf('Done')!=-1)){
+		var value=t.parentNode.innerHTML.substring((t.parentNode.innerHTML.indexOf('<span>')+6));
+		if(t.parentNode.innerHTML.indexOf('by: ')!=-1){
+			value=value.substring(0,(value.indexOf('by: ')));
+		}else{
+			value=value.substring(0,(value.indexOf('</span>')));
+		}
+		var datestring='';
+		if(t.parentNode.innerHTML.indexOf('by: ')!=-1){
+		 datestring=t.parentNode.innerHTML.substring(t.parentNode.innerHTML.indexOf('by: '));
+		 datestring=datestring.substring(0,15);
+		}
+		var done='<img src="images/tick-circle.png" alt="Done" style="float:left;display:none;">';
+		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
+		try{
+		var liNode = document.createElement("li");		
+		liNode.innerHTML=done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" > '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
+		t.parentNode.parentNode.replaceChild(liNode,t.parentNode);
+		}catch(e){
+	
+		}
+	}else if(t.tagName==='IMG' && (t.alt.indexOf('Not Complete')!=-1)){
+		var value=t.parentNode.innerHTML.substring((t.parentNode.innerHTML.indexOf('value')+6));
+		value=value.substring(1,(value.indexOf('id="new')-2));
+		var datestring='';
+		if(t.parentNode.innerHTML.indexOf('by: ')!=-1){
+		 datestring=t.parentNode.innerHTML.substring(t.parentNode.innerHTML.indexOf('by: '));
+		 datestring=datestring.substring(0,15);
+		}		
+		var done='<img src="images/tick-circle.png" alt="Done" style="float:left;">';
+		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left; display:none;">';
+		try{
+		var liNode = document.createElement("li");		
+		liNode.innerHTML=done+notDone+'<strike><span>'+value+' '+datestring+'</span></strike><img src="images/delete.gif" alt="Delete Item" style="float:right;">';
+		t.parentNode.parentNode.replaceChild(liNode,t.parentNode);
+		}catch(e){
+	
+		}
+	
+	}
+	 storestate();
+    ev.preventDefault();
+  }, false);
+  
+   todoHead.addEventListener( 'click', function( ev ) {debugger
+    var t = ev.target;
+	var noLi;
+	if(t.tagName==='IMG'&& (t.alt.indexOf('Delete')!=-1)){
+		 noLi=t.parentNode.parentNode.childNodes.length;
+		 t.parentNode.parentNode.removeChild( t.parentNode );
+		 
+		 if(fieldName.value==t.parentNode.innerHTML.substring(0,t.parentNode.innerHTML.indexOf("<img"))){
+			todo.innerHTML =''; 
+			fieldName.value='';
+			localStorage.todolist='';
+		 }
+		if(noLi==1){
+			todoHead.innerHTML ='';
+		}
+	}
+	//document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+	//alert('here');
+	if(t.innerHTML){
+		todo.innerHTML=localStorage.getItem(t.innerHTML.substring(0,t.innerHTML.indexOf("<img")));
+		fieldName.value=t.innerHTML.substring(0,t.innerHTML.indexOf("<img"));
+	}	
+	
+	storestateTotal();
+    ev.preventDefault();
+  }, false);
+
+  //document.addEventListener( 'DOMContentLoaded', retrievestate, false );
+  document.addEventListener( 'DOMContentLoaded', retrievestateHeader, false );
+  
+  function storestate() {	debugger;
+    localStorage.todolist = todo.innerHTML;
+  };
+  
+  function storestateTotal() {	debugger;
+    localStorage.todolistheader = todolistheader.innerHTML;
+	var headerArray=todolistheader.innerHTML.split('<li>');
+	var present=0;
+	for(var i=0; i<headerArray.length; i++){
+		if(headerArray[i].indexOf("<img")!=-1){
+		//	newHeader.push(headerArray[i].substring(0,headerArray[i].indexOf("</li>")));
+			if(headerArray[i].substring(0,headerArray[i].indexOf("<img"))==fieldName.value){
+				localStorage.setItem(fieldName.value,todo.innerHTML);
+				present=1;
+				break;
+			}
+		}
+	}
+	if(present==0 && fieldName.value!=''){
+		localStorage.setItem(fieldName.value,todo.innerHTML);
+		todoHead.innerHTML += '<li>' + fieldName.value + '<img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+	}
+	//for
+	
+  };
+
+  function retrievestate() {debugger;
+    if ( localStorage.todolist ) {
+      todo.innerHTML = localStorage.todolist;
+    }
+  };
+  
+   function retrievestateHeader() {debugger;
+    if ( localStorage.todolistheader ) {
+      todoHead.innerHTML = localStorage.todolistheader;
+    }
+  };
+
+  
+  
+})();
+function newfunction(e){
+  debugger;
+ 
+  var value=e.value;
+		var datestring='';
+		if(e.parentNode.innerHTML.indexOf('by: ')!=-1){
+		 datestring=e.parentNode.innerHTML.substring(e.parentNode.innerHTML.indexOf('by: '));
+		 datestring=datestring.substring(0,15);
+		}
+		var done='<img src="images/tick-circle.png" alt="Done" style="float:left;display:none;">';
+		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
+		try{
+		var liNode = document.createElement("li");		
+		liNode.innerHTML=done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" > '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
+		//e.parentNode.parentNode.replaceChild(liNode,e.parentNode);
+		//e.parentNode=liNode;
+		}catch(e){
+	
+		}
+		 var todo=document.querySelector( '#todolist' );
+		 todo.replaceChild(liNode,e.parentNode);
+  localStorage.todolist =todo.innerHTML;
+  
+ // storestate();
+  }
+</script>
+</body>
+</html>
