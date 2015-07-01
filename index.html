@@ -185,11 +185,12 @@
 		//for(var i=0; i<localStorage.length; i++)
 		//localStorage.removeItem(t.parentNode.innerHTML);
 	//alert(1);
+		storestateTotal();
 		todo.innerHTML =''; 
 		fieldName.value='';
 		localStorage.todolist='';
 	}
-  
+	
 	//storestateTotal();
     ev.preventDefault();
   }, false);
@@ -279,7 +280,7 @@
   };
   
   function storestateTotal() {	debugger;
-    localStorage.todolistheader = todolistheader.innerHTML;
+    
 	var headerArray=todolistheader.innerHTML.split('<li>');
 	var present=0;
 	for(var i=0; i<headerArray.length; i++){
@@ -296,7 +297,7 @@
 		localStorage.setItem(fieldName.value,todo.innerHTML);
 		todoHead.innerHTML += '<li>' + fieldName.value + '<img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
 	}
-	//for
+	localStorage.todolistheader = todolistheader.innerHTML;
 	
   };
 
