@@ -20,24 +20,17 @@
     font-family: helvetica, arial, sans-serif;
   }
   form {
-    width: 700px;
+    width: 400px;
     background: #333;
     color: #fff;
     border-radius: 5px;
     padding: 5px 10px;
   }
-  textarea {
-    margin: 0px; 
-	width: 590px; 
-	height: 35px;
-  }
   #newitem {
-	margin: 0px;
-    width: 590px;
-	height: 35px;
+    width: 160px;
   }
   #todolist {
-    width: 700px;
+    width: 400px;
     margin: 10px 10px;
   }
   #todolist li {
@@ -93,8 +86,8 @@
     <form action="#" method="post" id="listForm">
       <div>
         <label for="newitem">Add item</label>
-		<textarea rows="2" cols="70" maxlength=140 name="newitem" id="newitem" 
-               placeholder="new item" ></textarea></br>
+		<input maxlength=140 type="text" name="newitem" id="newitem" 
+               placeholder="new item" ></br>
 		<label for="myDate">Complete by</label>	   
 		<input type="date" name="myDate" id="myDate" value="">	   
         <img src="images/add.gif" alt="Add Item" style="float:right;">
@@ -132,7 +125,7 @@
 		}
 		var done='<img src="images/tick-circle.png" alt="Done" style="float:left; display:none;">';
 		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
-		todo.innerHTML += '<li>'+done+notDone+'<textarea rows="2" cols="70" maxlength=140 onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" >'+field.value+'</textarea> '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+		todo.innerHTML += '<li>'+done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" > '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
 		//todo.innerHTML += '<li><strike>'+field.value+' '+datestring+' </strike>    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
 		field.value = '';
 		fieldDate.value='';
@@ -159,7 +152,7 @@
 	}
 	var done='<img src="images/tick-circle.png" alt="Done" style="float:left; display:none;">';
 	var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
-	todo.innerHTML += '<li>'+done+notDone+'<textarea rows="2" cols="70" maxlength=140 onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" >'+field.value+'</textarea> '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
+	todo.innerHTML += '<li>'+done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+field.value+'" id="newitem" placeholder="new item" > '+datestring+'    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
 	//todo.innerHTML += '<li><strike>'+field.value+' '+datestring+' </strike>    <img src="images/delete.gif" alt="Delete Item" style="float:right;"></li>';
 	field.value = '';
 	fieldDate.value='';
@@ -224,7 +217,7 @@
 		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
 		try{
 		var liNode = document.createElement("li");		
-		liNode.innerHTML=done+notDone+'<textarea rows="2" cols="70" maxlength=140 onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" >'+value+'</textarea> '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
+		liNode.innerHTML=done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" > '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
 		t.parentNode.parentNode.replaceChild(liNode,t.parentNode);
 		}catch(e){
 	
@@ -336,7 +329,7 @@ function newfunction(e){
 		var notDone='<img src="images/tick-white.png" alt="Not Complete" style="float:left;">';
 		try{
 		var liNode = document.createElement("li");		
-		liNode.innerHTML=done+notDone+'<textarea rows="2" cols="70" maxlength=140 onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" >'+value+'</textarea> '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
+		liNode.innerHTML=done+notDone+'<input type="text" onchange="newfunction(this)" name="newitem" value="'+value+'" id="newitem" placeholder="new item" > '+datestring+'   <img src="images/delete.gif" alt="Delete Item" style="float:right;">';
 		//e.parentNode.parentNode.replaceChild(liNode,e.parentNode);
 		//e.parentNode=liNode;
 		}catch(e){
